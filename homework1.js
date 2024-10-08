@@ -1,9 +1,3 @@
-/* Assumption:
- * 1) The canvas element for both graphs has already been created in the html file and their width has been set
- * Known Issues:
- * 1) When the number of attackers is much greater compared to the number of servers the histogram gets cut off by google sites (not an issue if run locally)
-*/
-
 //simply generates a random Hex
 function generateColor() {
   const hexArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E", "F"];
@@ -17,7 +11,7 @@ function generateColor() {
 //DrawOne, as the name implies, simply draws one of the
 //stepline charts for a single attacker using a randomly generated hex colour
 //the charts could have been made prettier by using Chart.js but I decided against using a library given last year's instructions
-function drawOne(ctx, width, height, step, ystep, data) {
+function drawSingleAttack(ctx, width, height, step, ystep, data) {
   ctx.strokeStyle = generateColor();
   ctx.beginPath();
   ctx.moveTo(0, height);
@@ -32,26 +26,26 @@ function drawOne(ctx, width, height, step, ystep, data) {
   ctx.stroke();
 }
 
-function drawHisto(histoMap, servers, ystep) {
+function drawHisto(histoMap, servers, attackers, ystep) {
   const canvas = document.getElementById("histoCanvas");
   const ctx = canvas.getContext("2d");
   canvas.height = ystep * servers;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  const xstep = (canvas.width - 50) / (servers + 5);
+  const xstep = (canvas.width - 50) / Math.max(servers, attackers);
   ctx.strokeStyle = "black";
   ctx.beginPath();
-  ctx.moveTo(50, canvas.height);
-  ctx.lineTo(50, 0);
+  ctx.moveTo(25, canvas.height);
+  ctx.lineTo(25, 0);
   ctx.stroke();
 
   ctx.font = `${(ystep * 3) / 4}px serif`;
   histoMap.forEach((value, key, map) => {
     let ycoord = canvas.height - key * ystep;
-    ctx.fillText(`${key}`, xstep / 2, ycoord - ystep / 4);
-    ctx.strokeRect(50, ycoord - ystep, value * xstep, ystep);
+    ctx.fillText(`${key}`, 0, ycoord - ystep / 4);
+    ctx.strokeRect(25, ycoord - ystep, value * xstep, ystep);
     ctx.fillText(
       `${value}`,
-      50 + value * xstep + xstep / 2,
+      25 + value * xstep + xstep / 2,
       ycoord - ystep / 4
     );
   });
@@ -63,9 +57,11 @@ function drawChart([dataSamples, histoMap]) {
   const canvas = document.getElementById("canvas");
   const width = canvas.width;
   const ctx = canvas.getContext("2d");
+  //clear canvas area
   ctx.clearRect(0, 0, width, width);
   const step = width / servers;
   const ystep = servers > 60 ? 30 : step;
+
   canvas.height = ystep * servers;
   const height = canvas.height;
   //we'll print a grid to fill the chart
@@ -82,16 +78,23 @@ function drawChart([dataSamples, histoMap]) {
   }
 
   for (let i = 0; i < dataSamples.length; i++) {
-    drawOne(ctx, width, height, step, ystep, dataSamples[i]);
+    drawSingleAttack(ctx, width, height, step, ystep, dataSamples[i]);
   }
   //function that draws the graph counting how many attacckers achieved n successes
-  drawHisto(histoMap, servers, ystep);
+  drawHisto(histoMap, servers, dataSamples.length, ystep);
 }
 
+function getAverage(dataArray) {
+  if (dataArray.length == 0) return [0, 0];
+  let x = dataArray.pop();
+  let [oldM, k] = getAverage(dataArray);
+  return [oldM + (x - oldM) / ++k, k];
+}
 //simulate attacks, where n is the number of servers, m the number of hackers
 // and p the probability of success for every single attack
 function simulateAttacks(hackers, servers, p) {
   let outcomes = [];
+  let finalResults = [];
   //in outcomes we store an array where every entry [i] is an array
   //storing the outcome at step [j]
   const histoMap = new Map();
@@ -105,10 +108,15 @@ function simulateAttacks(hackers, servers, p) {
       hackerresult.push(successes);
     }
     outcomes.push(hackerresult);
+    finalResults.push(successes);
     histoMap.get(successes) == null
       ? histoMap.set(successes, 1)
       : histoMap.set(successes, histoMap.get(successes) + 1);
   }
+  const avgDisplay = document.getElementById("avgDisplay");
+  avgDisplay.innerHTML = `Average Penetration Score=  ${getAverage(
+    finalResults
+  )[0].toFixed(2)}`;
   return [outcomes, histoMap];
 }
 
@@ -116,5 +124,12 @@ document.getElementById("myBtn").addEventListener("click", () => {
   const n = parseInt(document.getElementById("servers").value);
   const m = parseInt(document.getElementById("hackers").value);
   const p = parseFloat(document.getElementById("prob").value);
+  const canvasDiv = document.getElementById("canvas_div");
+  canvasDiv.classList.remove("hor", "vert");
+  document.getElementById("vertical").checked
+    ? canvasDiv.classList.add("vert")
+    : canvasDiv.classList.add("hor");
+
   drawChart(simulateAttacks(m, n, p));
 });
+
