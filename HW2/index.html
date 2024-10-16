@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title></title>
+  </head>
+  <body>
+    <div class="flex hor">
+      <div class="flex vert input-container">
+        <div class="input-box vert">
+          <label for="hackers" class="label">Paths: </label>
+          <input type="number" id="hackers" min="0" class="input-field" />
+        </div>
+        <div class="input-box vert">
+          <label for="servers" class="label">Steps: </label>
+          <input type="number" id="servers" min="0" class="input-field" />
+        </div>
+        <div class="input-box vert">
+          <label for="prob" class="label">Probability of success: </label>
+          <input type="number" id="prob" min="0" max="1" class="input-field" />
+          <div class="input-box vert">
+            <label for="hackers" class="label">Step: </label>
+            <input type="number" id="midStep" min="0" class="input-field" />
+          </div>
+        </div>
+        <button class="btn" id="myBtn">Simulate</button>
+      </div>
+      <div class="flex hor avgDisp" id="avgDisplay"></div>
+    </div>
+    <div class="flex hidden hor" id="canvas_div">
+      <div class="flex vert">
+        <h4>Random Walk:</h4>
+        <canvas id="canvas" width="700px" height="700px"></canvas>
+      </div>
+      <div class="flex vert">
+        <h4>Final Distribution:</h4>
+        <canvas id="finHisto" width="400px" height="700px"></canvas>
+      </div>
+      <div class="flex vert">
+        <h4>Absolute (in Red) Relative (in Blue) penetration frequency:</h4>
+        <canvas id="penPath" width="400px" height="400px"></canvas>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
