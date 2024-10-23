@@ -69,7 +69,7 @@ function drawGraph(paths, n, mean) {
   //scaliamo il salto verticale in base al valore massimo per leggibilita'
   let maxValue = Math.max(...paths.flat());
   let ystep =
-    maxValue > 100 ? (height - 100) / (maxValue * 1.5) : (height - 100) / 100;
+    maxValue > 50 ? (height - 100) / (maxValue * 1.5) : (height - 100) / 100;
 
   let stepLineBox = document.getElementById("step_line_checkmark").checked;
   drawGrid(ctx, width, height, n);
