@@ -1,0 +1,133 @@
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hor {
+  flex-direction: row;
+}
+.vert {
+  flex-direction: column;
+  align-items: start;
+}
+
+.input-container {
+  display: flex;
+  justify-content: center;
+  margin: 10px 30px 60px 30px;
+}
+
+.avgDisp {
+  width: 100%;
+  margin: 0 auto;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 10px 0px 20px 0px;
+}
+
+body {
+  font-family: "Open Sans";
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.input-container {
+  width: 500px;
+  height: 350px;
+  margin: 30px auto;
+  background-color: #fff;
+  border: solid 1px #ccc;
+  padding: 20px 10px;
+  border-radius: 5px;
+}
+
+.input-box {
+  border: none;
+  outline: none;
+  position: relative;
+  margin: 0 0 20px 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.input-box input {
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: 5px 5px 8px 0px;
+  width: 100%;
+  font-size: 18px;
+  border-bottom: solid 1px #efefef;
+}
+
+.btn {
+  margin: 10px 30px;
+  background-color: #ffffff;
+  border: 1px solid rgb(209, 213, 219);
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  color: #111827;
+  font-family: "Inter var", ui-sans-serif, system-ui, -apple-system, system-ui,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  padding: 0.75rem 1rem;
+  text-align: center;
+  text-decoration: none #d1d5db solid;
+  text-decoration-thickness: auto;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.btn:hover {
+  background-color: rgb(249, 250, 251);
+}
+
+.btn:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.btn:focus-visible {
+  box-shadow: none;
+}
+
+#canvas_div {
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.avgDisp {
+  width: calc(100%-500px);
+  height: 350px;
+  margin: 30px auto;
+  background-color: #fff;
+  border: solid 1px #ccc;
+  padding: 20px 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: large;
+}
+
+#canvas_div canvas {
+  margin-top: 40px;
+}
