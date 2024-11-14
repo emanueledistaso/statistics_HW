@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="flex hor">
+      <h3>Random Variable Distribution Generator:</h3>
+    </div>
+    <div class="flex hor">
+      <div class="input-box flex hor">
+        <label for="total_n" class="label">Number of extractions: </label>
+        <input type="number" id="total_n" min="0" class="input-field" />
+      </div>
+      <div class="input-box flex hor">
+        <label for="image_n" class="label">Cardinality of image set: </label>
+        <input type="number" id="image_n" min="0" class="input-field" />
+      </div>
+      <button class="btn" id="prob_btn">Generate</button>
+    </div>
+    <div id="probability_box" class="flex hor" style="flex-wrap: wrap"></div>
+    <button class="btn hidden" id="sim_btn">Run Simulation</button>
+    <div id="avg_disp" class="avgDisp hidden"></div>
+    <div id="canvas_div" class="flex vert hidden" style="flex-wrap: wrap">
+      <canvas id="legend" width="1000px" height="50px"></canvas>
+      <canvas id="canvas" width="1000px" height="600px"></canvas>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
