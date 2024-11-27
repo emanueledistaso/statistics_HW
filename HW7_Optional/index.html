@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      .flex {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .hor {
+        flex-direction: row;
+        justify-content: space-around;
+      }
+
+      .vert {
+        flex-direction: column;
+        align-items: start;
+      }
+
+      .input-container {
+        display: flex;
+        justify-content: center;
+        margin: 10px 30px 60px 30px;
+      }
+
+      .hidden {
+        visibility: hidden;
+      }
+      .avgDisp {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 18px;
+        font-weight: 500;
+        padding: 10px 0px 20px 0px;
+      }
+
+      body {
+        font-family: "Open Sans";
+      }
+
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      div h3 {
+        margin: 20px auto;
+        font-size: larger;
+      }
+      /* Firefox */
+      input[type="number"] {
+        -moz-appearance: textfield;
+      }
+
+      .input-container {
+        width: 500px;
+        height: 350px;
+        margin: 30px auto;
+        background-color: #fff;
+        border: solid 1px #ccc;
+        padding: 20px 10px;
+        border-radius: 5px;
+      }
+
+      .input-box {
+        border: none;
+        outline: none;
+        position: relative;
+        margin: 0 10px 20px 10px;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      .input-box label {
+        margin: 0 10px;
+      }
+
+      .input-box input {
+        border: none;
+        outline: none;
+        padding: 5px 5px 8px 0px;
+        width: 90%;
+        font-size: 16px;
+        border-bottom: solid 1px #efefef;
+      }
+
+      .btn {
+        margin: 10px 30px;
+        background-color: #ffffff;
+        border: 1px solid rgb(209, 213, 219);
+        border-radius: 0.5rem;
+        box-sizing: border-box;
+        color: #111827;
+        font-family: "Inter var", ui-sans-serif, system-ui, -apple-system,
+          system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
+          sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+          "Noto Color Emoji";
+        font-size: 0.875rem;
+        font-weight: 600;
+        line-height: 1.25rem;
+        padding: 0.75rem 1rem;
+        text-align: center;
+        text-decoration: none #d1d5db solid;
+        text-decoration-thickness: auto;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+      }
+
+      .btn:hover {
+        background-color: rgb(249, 250, 251);
+      }
+
+      .btn:focus {
+        outline: 2px solid transparent;
+        outline-offset: 2px;
+      }
+
+      .btn:focus-visible {
+        box-shadow: none;
+      }
+
+      #canvas_div {
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .avgDisp {
+        width: 100%;
+        margin: 10px auto;
+        background-color: #fff;
+        border: solid 1px #ccc;
+        padding: 30px 40px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        font-size: large;
+        text-align: center;
+      }
+
+      #canvas_div canvas {
+        margin: 40px auto;
+      }
+    </style>
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="flex hor">
+      <h3>Y=g^U mod n distribution generation:</h3>
+    </div>
+    <div class="flex hor">
+      <div class="input-box flex hor">
+        <label for="image_n" class="label">Generator g: </label>
+        <input type="number" id="generator" min="0" class="input-field" />
+      </div>
+      <div class="input-box flex hor">
+        <label for="samples" class="label">max_U: </label>
+        <input
+          type="number"
+          id="max_U"
+          name="samples"
+          min="0"
+          class="input-field"
+        />
+      </div>
+      <div class="input-box flex hor">
+        <label for="sample_size" class="label"
+          >Number to use in the modulo operation n:
+        </label>
+        <input
+          type="number"
+          id="modulo"
+          name="sample_size"
+          min="0"
+          class="input-field"
+        />
+      </div>
+      <button class="btn" id="sim_btn">Run Simulation</button>
+    </div>
+    <div id="avg_disp" class="avgDisp hidden"></div>
+    <div id="canvas_div" class="flex vert hidden" style="flex-wrap: wrap">
+      <canvas id="canvas" width="1000px" height="600px"></canvas>
+    </div>
+    <script>
+      function drawHisto(distribution) {
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+        const useHeight = canvas.height - 40;
+        const canvasHeight = canvas.height;
+        const width = canvas.width;
+        //clear canvas
+        ctx.clearRect(0, 0, width, canvasHeight);
+        //count the occurrences of each mean (maxcount will define the scale)
+        const maxfreq = Math.max(...distribution);
+        ctx.font = `15px serif`;
+        ctx.strokeStyle = "black";
+        ctx.moveTo(0, 0);
+        ctx.lineTo(0, useHeight);
+        ctx.lineTo(width, useHeight);
+        ctx.lineTo(width, 0);
+        ctx.lineTo(0, 0);
+        ctx.stroke();
+
+        const barWidth = Math.floor(
+          (width - (distribution.length + 1) * 5) / distribution.length
+        );
+        const padding = 5; // Space between bars
+        //draw bar graph
+        let xstart = 5; // Start position on the x-axis with padding for the first bar
+        for (iterator in distribution) {
+          const barHeight =
+            (distribution[iterator] / maxfreq) * (useHeight - 20); // Normalize the height
+          const yPosition = useHeight - barHeight;
+
+          ctx.fillStyle = "#1984c5";
+          ctx.fillRect(xstart, yPosition, barWidth, barHeight);
+
+          ctx.fillStyle = "black";
+          ctx.fillText(iterator, xstart + barWidth / 2 - 8, useHeight + 20);
+
+          xstart += barWidth + padding;
+        }
+      }
+
+      //generates Y = g^U mod n distribution
+      function generateDistribution(gen, maxU, modulo) {
+        //we'll run 1000 experiments
+        let distribution = new Array(modulo).fill(0);
+        for (let i = 0; i < 3000; i++) {
+          const rand = Math.floor(Math.random() * maxU) + 1;
+          const result = gen ** rand % modulo;
+          distribution[result]++;
+        }
+        return distribution;
+      }
+
+      function computeEntropy(frequencies) {
+        const totalfrequency = frequencies.reduce((sum, freq) => sum + freq, 0);
+        //now compute entropy;
+        let entropy = 0;
+        frequencies.forEach((frequency) => {
+          if (frequency > 0) {
+            const prob = frequency / totalfrequency;
+            entropy -= prob * Math.log2(prob);
+          }
+        });
+        return entropy;
+      }
+      function computeSimpson(frequencies) {
+        let index = 0;
+        const totalfrequency = frequencies.reduce((sum, freq) => sum + freq, 0);
+        frequencies
+          .filter((a) => a > 0)
+          .forEach((value) => (index += value * (value - 1)));
+        return 1 - index / (totalfrequency * (totalfrequency - 1));
+      }
+      document.getElementById("sim_btn").addEventListener("click", () => {
+        const gen = parseInt(document.getElementById("generator").value);
+        const maxU = parseInt(document.getElementById("max_U").value);
+        const modulo = parseInt(document.getElementById("modulo").value);
+        const distr = generateDistribution(gen, maxU, modulo);
+        const avgDisp = document.getElementById("avg_disp");
+        document.getElementById("canvas_div").classList.remove("hidden");
+        avgDisp.classList.remove("hidden");
+        const entropy = computeEntropy(distr);
+        const simpsonIndex = computeSimpson(distr);
+        avgDisp.innerHTML = `<p>Entropy = ${entropy.toFixed(
+          3
+        )}</p> <p>Simpson Index = ${simpsonIndex.toFixed(3)}`;
+        drawHisto(distr);
+      });
+    </script>
+  </body>
+</html>
