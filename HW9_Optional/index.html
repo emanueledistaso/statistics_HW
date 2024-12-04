@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Caesar's cipher decryption</title>
+  </head>
+  <body>
+    <div class="input-container vert">
+      <h2>Caesar Cipher Encryption & Decryption</h2>
+
+      <label for="input-text">Enter Text:</label>
+      <textarea id="input-text" rows="26" cols="100">
+With a clamor of bells that set the swallows soaring, the Festival of Summer came to the city
+Omelas, bright-towered by the sea. The ringing of the boats in harbor sparkled with flags. In the
+streets between houses with red roofs and painted walls, between old moss-grown
+gardens and under avenues of trees, past great parks and public buildings, processions moved.
+
+Some were decorous: old people in long stiff robes of mauve and gray, grave master workmen,
+quiet, merry women carrying their babies and chatting as they walked. In other streets the music
+beat faster, a shimmering of gong and tambourine, and the people went dancing, the procession
+was a dance. Children dodged in and out, their high calls rising like the swallows' crossing flights
+over the music and the singing. All the processions wound towards the north side of the city,
+where on the great water-meadow called the Green Fields boys and girls, naked in the bright air,
+with mud-stained feet and ankles and long, lithe arms,exercised their restive horses before the
+race. The horses wore no gear at all but a halter without bit. Their manes were braided with
+streamers of silver, gold, and green. They flared their nostrils and pranced and boasted to one
+another; they were vastly excited, the horse being the only animal who has adopted our
+ceremonies as his own. Far off to the north and west the mountains stood up half encircling
+Omelas on her bay. The air of morning was so clear that the snow still crowning the Eighteen
+Peaks burned with white-gold fire across the miles of sunlit air, under the dark blue of the sky.
+There was just enough wind to make the banners that marked the racecourse snap and flutter
+now and then. In the silence of the broad green meadows one could hear the music winding
+throughout the city streets, farther and nearer and ever approaching, a cheerful faint sweetness
+of the air from time to time trembled and gathered together and broke out into the great joyous
+clanging of the bells.
+
+Joyous! How is one to tell about joy? How describe the citizens of Omelas?</textarea
+      >
+
+      <button id="encrypt-btn" class="btn">Substitution Cipher</button>
+      <button id="permute-btn" class="btn">Permutation Cipher</button>
+
+      <div class="output-area">
+        <h3 id="encrypted-title">Encrypted Text:</h3>
+        <div id="encrypted-text"></div>
+        <div class="flex hor">
+          <button id="decrypt-btn" class="btn" disabled>
+            Frequency Analysis Decryption
+          </button>
+          <button id="key-decrypt-btn" class="btn" disabled>
+            Key Decryption
+          </button>
+        </div>
+        <div id="canvas-div" class="hidden">
+          <h3>Frequency Histogram</h3>
+          <div id="entropy-display"></div>
+          <canvas id="canvas" width="1000px" height="500px"></canvas>
+        </div>
+        <h3>Decrypted Text (Frequency Analysis):</h3>
+        <div id="decrypted-text"></div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
