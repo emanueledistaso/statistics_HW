@@ -1,4 +1,4 @@
-//add function to shuffle string (credits to Andy E on stackExchange)
+//add function to shuffle string
 //which implements Fisher-Yates shuffle
 String.prototype.shuffle = function () {
   let string = this.split("");
